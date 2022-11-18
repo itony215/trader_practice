@@ -14,74 +14,7 @@
 <body>
   <div id="app">
     <script>
-      Vue.component('Select', {
-        props: ['value', 'options'],
-        computed: {
-          index: {
-            get() {
-              return this.value;
-            },
-            set(val) {
-              this.$emit('input', val)
-            }
-          }
-        },
-        template: `
-      <select v-model="index">
-        <option v-for="(item, idx) in options" :value="idx">
-          {{item.name}}
-        </option>
-      </select>
-      `
-      })
-      new Vue({
-        el: '#app',
-        mounted() {
-          fetch('https://raw.githubusercontent.com/itony215/training_data/main/data_list_2022.json')
-            .then(res => res.json())
-            .then(stocks => {
-              this.stocks = stocks
-            })
-        },
-        data: {
-          stocks: [],
-          stockIdx: 0,
-          dateIdx: 0,
-        },
-        computed: {
-          dates() {
-
-            if (this.stocks.length) {
-              return this.stocks[this.stockIdx].dates;
-            }
-          }
-        },
-        watch: {
-          stockIdx() {
-            load_page1(this.stocks[this.stockIdx].name)
-            this.dateIdx = 0;
-
-          },
-          dateIdx() {
-            globalData = []
-            currentIterator = 0
-            guiButton.innerText = guiButtonState = 'Go'
-            intervalId = clearInterval(intervalId);
-            console.log(guiButtonState)
-            console.log(this.stocks[this.stockIdx].name)
-            console.log(this.dates[this.dateIdx].file)
-            load_page2(this.stocks[this.stockIdx].name, this.dates[this.dateIdx].file)
-          }
-        },
-        template: `
-      <div>
-        <Select v-model="stockIdx" :options="stocks"/>
-        <Select v-model="dateIdx" :options="dates"/> 
-      </div>
-      `
-
-      })
-    </script>
+      Vue.component("Select",{props:["value","options"],computed:{index:{get(){return this.value},set(t){this.$emit("input",t)}}},template:'\n  <select v-model="index">\n    <option v-for="(item, idx) in options" :value="idx">\n      {{item.name}}\n    </option>\n  </select>\n  '}),new Vue({el:"#app",mounted(){fetch("https://raw.githubusercontent.com/itony215/training_data/main/data_list_2022.json").then(t=>t.json()).then(t=>{this.stocks=t})},data:{stocks:[],stockIdx:0,dateIdx:0},computed:{dates(){if(this.stocks.length)return this.stocks[this.stockIdx].dates}},watch:{stockIdx(){var t;t=this.stocks[this.stockIdx].name,fetch("https://raw.githubusercontent.com/itony215/flat_viewer_data/main/json/data_"+t+".json").then(t=>t.json()).then(t=>{m=t}),this.dateIdx=0},dateIdx(){var t;c=[],h=0,g.innerText=M="Go",e=clearInterval(e),console.log(M),console.log(this.stocks[this.stockIdx].name),console.log(this.dates[this.dateIdx].file),this.stocks[this.stockIdx].name,t=this.dates[this.dateIdx].file,fetch("https://raw.githubusercontent.com/itony215/training_data/main/stock_all_backup/"+t).then(t=>t.json()).then(t=>{!function(t){c.push({name:"Price",data:t.openPrice.map((e,a)=>[1e3*t.timestamp[a],e])}),c.push({name:"avgPrice",data:t.avgPrice.map((e,a)=>[1e3*t.timestamp[a],e])}),c.push({name:"volumn",data:t.volumn.map((e,a)=>[1e3*t.timestamp[a],e])}),c[0].data.unshift([1e3*t.timestamp[0],t.openPrice[0]]),c[1].data.unshift([1e3*t.timestamp[0],t.avgPrice[0]]),c[2].data.unshift([1e3*t.timestamp[0],t.volumn[0]]),u=Math.max.apply(null,c.map(t=>t.data.length-1))}(t),E()})}},template:'\n  <div>\n    <Select v-model="stockIdx" :options="stocks"/>\n    <Select v-model="dateIdx" :options="dates"/> \n  </div>\n  '});    </script>
 
   </div>
   <div class="wrap">
@@ -105,8 +38,7 @@
     <div id="history">history</div>
   </div>
   <script>
-let t,e,a,n,l,i,r,d,o,s,g=[],c=[],m=0,h=0,u=document.getElementById("start"),x=document.getElementById("sell_btn"),y=document.getElementById("buy_btn"),b=document.getElementById("order"),f=document.getElementById("profit"),L=document.getElementById("num"),p=document.getElementById("money"),M=document.getElementById("history"),T="Start",H=(new Date).getTimezoneOffset(),v=3e6,w=0,E=0,S=0;function F(e){let n=((g[0].data[e][1]-a)/a*100).toFixed(2);n>=0?t.setTitle(null,{text:g[0].data[e][1]+" ("+n+"%)",style:{color:"red",fontWeight:"bold"}},!1):t.setTitle(null,{text:g[0].data[e][1]+" ("+n+"%)",style:{color:"green",fontWeight:"bold"}},!1);const l=g.map(t=>t.data[e][1]),i=l.indexOf(Math.max.apply(null,l));t.series.forEach((t,a)=>{const n=i===a&&(e<5||e%5==0);t.addPoint({x:g[a].data[e][0],y:g[a].data[e][1],dataLabels:{enabled:n},marker:{enabled:n}},!1,!1,!1)}),t.redraw({duration:500})}function I(){let e=g[0].data[g[0].data.length-1][0]-1728e5,m=g[0].data[g[0].data.length-1][0]-864e5;c.map(t=>{t[0]>e&&t[0]<m&&(a=t[4],n=1.1*t[4],l=.9*t[4],i=(t[2]+t[3]+2*t[4])/4,o=t[2]-t[3]+i,s=2*i-t[3],d=2*i-t[2],r=i-(t[2]-t[3]))}),t=Highcharts.chart("container",{chart:{type:"line",marginLeft:100},legend:{layout:"proximate",align:"right"},title:{floating:!0,align:"left",x:80,y:10,text:""},subtitle:{floating:!0,align:"left",y:50,x:80,text:Highcharts.dateFormat("%Y-%m-%d",g[0].data[g[0].data.length-1][0]),style:{fontSize:"40px"}},tooltip:{split:!0,pointFormatter:function(){var t=this.y;return`<span style="color:${this.color}">●</span> ${this.series.name}: <b>${t}</b><br/>`}},yAxis:[{top:"10%",height:"90%",min:l,max:n,title:{text:""},plotLines:[{color:"red",dashStyle:"solid",value:n,width:2,label:{text:n,align:"left"}},{color:"green",dashStyle:"solid",value:l,width:2,label:{text:l,align:"left"}},{color:"black",dashStyle:"solid",value:a,width:2,label:{text:a,align:"left"}},{color:"black",dashStyle:"dot",value:i,width:2,label:{text:i,align:"right"}},{color:"red",dashStyle:"dot",value:o,width:2,label:{text:o,align:"right"}},{color:"red",dashStyle:"dot",value:s,width:2,label:{text:s,align:"right"}},{color:"green",dashStyle:"dot",value:d,width:2,label:{text:d,align:"right"}},{color:"green",dashStyle:"dot",value:r,width:2,label:{text:r,align:"right"}}],maxPadding:.2,softMax:1},{top:"80%",height:"20%",title:{text:"成交量"}}],xAxis:{gridLineWidth:2,min:g[0].data[0][0],max:g[0].data[g[0].data.length-1][0],minRange:1008e4,type:"datetime"},time:{timezoneOffset:H},plotOptions:{series:{animation:{duration:500},dataLabels:{formatter:function(){return this.y}}}},series:g.map(t=>"volumn"!=t.name?{name:t.name,data:t.data.slice(0,0).map(t=>({x:t[0],y:t[1]}))}:{type:"column",name:t.name,data:t.data.slice(0,0).map(t=>t[1]),yAxis:1})})}u.addEventListener("click",(function(){"Stop"===T?(e=clearInterval(e),u.innerText=T="Go"):("Restart"===T&&I(),u.innerText=T="Stop",F(m+=1),e=setInterval((function(){m===h?(e=clearInterval(e),m=0,u.innerText=T="Restart"):F(m+=1)}),500))})),x.addEventListener("click",(function(){let t=new Date(g[0].data[m][0]),e=t.getHours(),a="0"+t.getMinutes(),n=0,l=0;E<=0&&v-1e3*g[0].data[m][1]>0&&(v-=1e3*g[0].data[m][1],p.innerHTML=v,w-=1e3*g[0].data[m][1],E-=1,S=(w/E/1e3).toFixed(2),L.innerHTML=E,b.innerHTML=S,M.innerHTML+="<br>"+e+":"+a.substr(-2)+"\t賣出 "+g[0].data[m][1]),E>0&&(M.innerHTML+="<br>"+e+":"+a.substr(-2)+"\t賣出 "+g[0].data[m][1],l=Math.floor(1e3*(g[0].data[m][1]-S)),M.innerHTML+="<br>損益: "+l,w-=1e3*S,E-=1,S=0==E?0:(w/E/1e3).toFixed(2),v+=1e3*g[0].data[m][1],console.log(v),p.innerHTML=v,n=parseFloat(f.innerHTML),n+=l,b.innerHTML=S,f.innerHTML=n,L.innerHTML=E)})),y.addEventListener("click",(function(){let t=new Date(g[0].data[m][0]),e=t.getHours(),a="0"+t.getMinutes(),n=0,l=0;E>=0&&v-1e3*g[0].data[m][1]>0&&(v-=1e3*g[0].data[m][1],p.innerHTML=v,w+=1e3*g[0].data[m][1],E+=1,S=(w/E/1e3).toFixed(2),L.innerHTML=E,b.innerHTML=S,M.innerHTML+="<br>"+e+":"+a.substr(-2)+"\t買進 "+g[0].data[m][1]),E<0&&(M.innerHTML+="<br>"+e+":"+a.substr(-2)+"\t買進 "+g[0].data[m][1],l=-Math.floor(1e3*(-parseFloat(S)+parseFloat(g[0].data[m][1]))),M.innerHTML+="<br>損益: "+l,w+=1e3*S,E+=1,v=v+1e3*(S-g[0].data[m][1])+1e3*S,S=0==E?0:(w/E/1e3).toFixed(2),p.innerHTML=v,n=parseFloat(f.innerHTML),n+=l,b.innerHTML=S,f.innerHTML=n,L.innerHTML=E)}))
-  </script>
+let t,e,a,n,i,o,l,d,s,r,c=[],m=[],h=0,u=0,g=document.getElementById("start"),p=document.getElementById("sell_btn"),x=document.getElementById("buy_btn"),f=document.getElementById("order"),y=document.getElementById("profit"),b=document.getElementById("num"),v=document.getElementById("money"),L=document.getElementById("history"),M="Start",T=(new Date).getTimezoneOffset(),H=3e6,I=0,k=0,w=0;function S(e){let n=((c[0].data[e][1]-a)/a*100).toFixed(2);n>=0?t.setTitle(null,{text:c[0].data[e][1]+" ("+n+"%)",style:{color:"red",fontWeight:"bold"}},!1):t.setTitle(null,{text:c[0].data[e][1]+" ("+n+"%)",style:{color:"green",fontWeight:"bold"}},!1);const i=c.map(t=>t.data[e][1]),o=i.indexOf(Math.max.apply(null,i));t.series.forEach((t,a)=>{const n=o===a&&(e<5||e%5==0);t.addPoint({x:c[a].data[e][0],y:c[a].data[e][1],dataLabels:{enabled:n},marker:{enabled:n}},!1,!1,!1)}),t.redraw({duration:500})}function E(){let e=c[0].data[c[0].data.length-1][0]-1728e5,h=c[0].data[c[0].data.length-1][0]-864e5;m.map(t=>{t[0]>e&&t[0]<h&&(a=t[4],n=1.1*t[4],i=.9*t[4],o=(t[2]+t[3]+2*t[4])/4,s=t[2]-t[3]+o,r=2*o-t[3],d=2*o-t[2],l=o-(t[2]-t[3]))}),t=Highcharts.chart("container",{chart:{type:"line",marginLeft:100},legend:{layout:"proximate",align:"right"},title:{floating:!0,align:"left",x:80,y:10,text:""},subtitle:{floating:!0,align:"left",y:50,x:80,text:Highcharts.dateFormat("%Y-%m-%d",c[0].data[c[0].data.length-1][0]),style:{fontSize:"40px"}},tooltip:{split:!0,pointFormatter:function(){var t=this.y;return`<span style="color:${this.color}">●</span> ${this.series.name}: <b>${t}</b><br/>`}},yAxis:[{top:"10%",height:"90%",min:i,max:n,title:{text:""},plotLines:[{color:"red",dashStyle:"solid",value:n,width:2,label:{text:n,align:"left"}},{color:"green",dashStyle:"solid",value:i,width:2,label:{text:i,align:"left"}},{color:"black",dashStyle:"solid",value:a,width:2,label:{text:a,align:"left"}},{color:"black",dashStyle:"dot",value:o,width:2,label:{text:o,align:"right"}},{color:"red",dashStyle:"dot",value:s,width:2,label:{text:s,align:"right"}},{color:"red",dashStyle:"dot",value:r,width:2,label:{text:r,align:"right"}},{color:"green",dashStyle:"dot",value:d,width:2,label:{text:d,align:"right"}},{color:"green",dashStyle:"dot",value:l,width:2,label:{text:l,align:"right"}}],maxPadding:.2,softMax:1},{top:"80%",height:"20%",title:{text:"成交量"}}],xAxis:{gridLineWidth:2,min:c[0].data[0][0],max:c[0].data[c[0].data.length-1][0],minRange:1008e4,type:"datetime"},time:{timezoneOffset:T},plotOptions:{series:{animation:{duration:500},dataLabels:{formatter:function(){return this.y}}}},series:c.map(t=>"volumn"!=t.name?{name:t.name,data:t.data.slice(0,0).map(t=>({x:t[0],y:t[1]}))}:{type:"column",name:t.name,data:t.data.slice(0,0).map(t=>t[1]),yAxis:1})})}g.addEventListener("click",(function(){"Stop"===M?(e=clearInterval(e),g.innerText=M="Go"):("Restart"===M&&E(),g.innerText=M="Stop",S(h+=1),e=setInterval((function(){h===u?(e=clearInterval(e),h=0,g.innerText=M="Restart"):S(h+=1)}),500))})),p.addEventListener("click",(function(){let t=new Date(c[0].data[h][0]),e=t.getHours(),a="0"+t.getMinutes(),n=0,i=0;k<=0&&H-1e3*c[0].data[h][1]>0&&(H-=1e3*c[0].data[h][1],v.innerHTML=H,I-=1e3*c[0].data[h][1],k-=1,w=(I/k/1e3).toFixed(2),b.innerHTML=k,f.innerHTML=w,L.innerHTML+="<br>"+e+":"+a.substr(-2)+"\t賣出 "+c[0].data[h][1]),k>0&&(L.innerHTML+="<br>"+e+":"+a.substr(-2)+"\t賣出 "+c[0].data[h][1],i=Math.floor(1e3*(c[0].data[h][1]-w)),L.innerHTML+="<br>損益: "+i,I-=1e3*w,k-=1,w=0==k?0:(I/k/1e3).toFixed(2),H+=1e3*c[0].data[h][1],console.log(H),v.innerHTML=H,n=parseFloat(y.innerHTML),n+=i,f.innerHTML=w,y.innerHTML=n,b.innerHTML=k)})),x.addEventListener("click",(function(){let t=new Date(c[0].data[h][0]),e=t.getHours(),a="0"+t.getMinutes(),n=0,i=0;k>=0&&H-1e3*c[0].data[h][1]>0&&(H-=1e3*c[0].data[h][1],v.innerHTML=H,I+=1e3*c[0].data[h][1],k+=1,w=(I/k/1e3).toFixed(2),b.innerHTML=k,f.innerHTML=w,L.innerHTML+="<br>"+e+":"+a.substr(-2)+"\t買進 "+c[0].data[h][1]),k<0&&(L.innerHTML+="<br>"+e+":"+a.substr(-2)+"\t買進 "+c[0].data[h][1],i=-Math.floor(1e3*(-parseFloat(w)+parseFloat(c[0].data[h][1]))),L.innerHTML+="<br>損益: "+i,I+=1e3*w,k+=1,H=H+1e3*(w-c[0].data[h][1])+1e3*w,w=0==k?0:(I/k/1e3).toFixed(2),v.innerHTML=H,n=parseFloat(y.innerHTML),n+=i,f.innerHTML=w,y.innerHTML=n,b.innerHTML=k)}))  </script>
   <style>
     #container {
       /* min-width: 300px; */
